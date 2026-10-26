@@ -1,0 +1,2 @@
+D1区分QAMPARI实体列表与ASQA长答案；D2解释QAMPARI precision和recall-5调整；D3构造明确标为教学的例子：金标准10个实体，预测5个且全对，普通recall与recall-5及precision分别多少；D4解释为何100% recall-5不能宣称覆盖全部答案，不能与所有任务EM recall混用。
+只根据所供原文。输出严格JSON，含decisions数组，id为D1至D4，各含answer、evidence数组（source_id、start_line、end_line整数且含两端）和limitations。无需重抄原文，按行定位。证据不足须明说。约1000中文字。

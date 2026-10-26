@@ -1,0 +1,49 @@
+{
+  "status": "ranges_valid",
+  "errors": [],
+  "semantic": "not_evaluated",
+  "excerpts": [
+    {
+      "decision": "D1",
+      "source_id": "A-P3",
+      "start_line": 75,
+      "end_line": 83,
+      "text": "3.2 Correctness\nOur objective is to measure the informativeness and\nutility of the generation to the question. Liu et al.\n(2023) propose to directly evaluateperceived utility\nby humans, a process difficult to automate. There-\nfore, we use correctness—whether the response is\naccurate compared to a ground truth answer—as a\nproxy. Evaluating the correctness of long-form gen-\neration is a challenging task (Krishna et al., 2021),"
+    },
+    {
+      "decision": "D1",
+      "source_id": "A-P3",
+      "start_line": 87,
+      "end_line": 99,
+      "text": "For ASQA, we follow Stelmakh et al. (2022)\nand calculate the recall of correct short answers by\nchecking whether the short answers (provided by\nthe dataset) are exact substrings of the generation\n(exact match recall; EM recall).\nFor QAMPARI, we follow Rubin et al. (2022)\nand calculate the precision and recall of the model\nprediction, by checking the exact match to the gold\nanswer list. We add one additional adjustment:\nconsidering that users often want to know only a\nfew example answers of the question, our evalua-\ntion considers recall to be 100% if the prediction\nincludes at least 5 correct answers (recall-5)."
+    },
+    {
+      "decision": "D2",
+      "source_id": "A-P3",
+      "start_line": 92,
+      "end_line": 99,
+      "text": "For QAMPARI, we follow Rubin et al. (2022)\nand calculate the precision and recall of the model\nprediction, by checking the exact match to the gold\nanswer list. We add one additional adjustment:\nconsidering that users often want to know only a\nfew example answers of the question, our evalua-\ntion considers recall to be 100% if the prediction\nincludes at least 5 correct answers (recall-5)."
+    },
+    {
+      "decision": "D3",
+      "source_id": "A-P3",
+      "start_line": 92,
+      "end_line": 99,
+      "text": "For QAMPARI, we follow Rubin et al. (2022)\nand calculate the precision and recall of the model\nprediction, by checking the exact match to the gold\nanswer list. We add one additional adjustment:\nconsidering that users often want to know only a\nfew example answers of the question, our evalua-\ntion considers recall to be 100% if the prediction\nincludes at least 5 correct answers (recall-5)."
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P3",
+      "start_line": 87,
+      "end_line": 91,
+      "text": "For ASQA, we follow Stelmakh et al. (2022)\nand calculate the recall of correct short answers by\nchecking whether the short answers (provided by\nthe dataset) are exact substrings of the generation\n(exact match recall; EM recall)."
+    },
+    {
+      "decision": "D4",
+      "source_id": "A-P3",
+      "start_line": 92,
+      "end_line": 99,
+      "text": "For QAMPARI, we follow Rubin et al. (2022)\nand calculate the precision and recall of the model\nprediction, by checking the exact match to the gold\nanswer list. We add one additional adjustment:\nconsidering that users often want to know only a\nfew example answers of the question, our evalua-\ntion considers recall to be 100% if the prediction\nincludes at least 5 correct answers (recall-5)."
+    }
+  ]
+}

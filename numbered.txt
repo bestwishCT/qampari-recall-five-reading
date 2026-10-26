@@ -1,0 +1,195 @@
+SOURCE A-P2 physical PDF page 2
+1: Dataset Corpus (#passages) Question type Example
+2: ASQA Wikipedia (21M) Factoid (ambiguous) Q: When did the US break away from England?
+3: A: The US declared independence on July 2, 1776 [1][2] ... The
+4: Treaty of Paris was later signed on September 3, 1783 [3].
+5: QAMPARI Wikipedia (21M) Factoid (list) Q: Which films have Gong Li as a member of their cast?
+6: A: The Story of Qiu Ju [1], Farewell My Concubine [2], The
+7: Monkey King 2 [3], Mulan [3], Saturday Fiction [3] ...
+8: ELI5 Sphere (899M) Why/How/What Q: How do student loans affect getting a mortgage?
+9: A: Student loans can affect the debt to income ratio [1], which is
+10: a key factor in determining the amount that ... [2][3]
+11: Table 1: The three datasets used in our ALCE benchmark. These datasets cover a wide range of question types and
+12: the corresponding corpora span from Wikipedia to Web-scale document collection.
+13: We present ALCE, the first reproducible bench-
+14: mark for automatically evaluating LLMs’ gener-
+15: ations with citations. ALCE assumes a natural-
+16: language question and a retrieval corpus, and re-
+17: quires building end-to-end systems to retrieve rel-
+18: evant passages from the corpus, generate a re-
+19: sponse to the question, and cite corresponding sup-
+20: porting passages. We compile three datasets that
+21: cover different types of questions and corpora—
+22: ASQA (Stelmakh et al., 2022), QAMPARI (Ru-
+23: bin et al., 2022), and ELI5 (Fan et al., 2019)—as
+24: shown in Table 1. Different from previous bench-
+25: marks (Lee et al., 2019; Bohnet et al., 2022), ALCE
+26: evaluates long-text generation, focusing on auto-
+27: matically evaluating citation quality, and allows
+28: citing multiple passages for individual statements.
+29: We design automatic evaluation methods in three
+30: dimensions: fluency, correctness, and citation
+31: quality. Specifically, we use MAUVE (Pillutla
+32: et al., 2021) to measure fluency, propose tailored
+33: correctness metrics for each dataset, and adopt a
+34: natural language inference (NLI) model (Honovich
+35: et al., 2022) to measure citation quality. We show-
+36: case how the three dimensions together contribute
+37: to a robust evaluation, preventing systems from ex-
+38: ploiting shortcuts. Additionally, we conduct human
+39: evaluation and demonstrate a strong correlation
+40: with our automatic metrics.
+41: We experiment on multiple systems with state-
+42: of-the-art LLMs and retrievers and also propose
+43: novel prompting strategies to synthesize retrieved
+44: text into text generation. Although all systems are
+45: capable of providing fluent and coherent responses,
+46: there remains substantial room for improvement in
+47: terms of correctness and citation quality: For exam-
+48: ple, on the ELI5 dataset, around 50% generations
+49: of our ChatGPT and GPT-4 baselines are not fully
+50: supported by the cited passages. Additionally, we
+51: find that (1) a closed-book model (generating an-
+52: swers without accessing any retrieved documents)
+53: with post-hoc citing achieves good correctness but
+54: much worse citation quality; (2) although interac-
+55: tive retrieval approaches (Yao et al., 2023; Schick
+56: et al., 2023) offer more flexibility in when/what
+57: to retrieve, they do not improve the performance
+58: on this challenging benchmark; (3) summarizing
+59: the retrieved passages in a shorter text improves
+60: correctness but not citation quality; (4) reranking
+61: multiple generations boosts citation quality mea-
+62: sured by human evaluation; (5) incorporating more
+63: retrieved passages in context does not help Chat-
+64: GPT but improves GPT-4 performance.
+65: Our extensive analyses highlight three major
+66: challenges of building LLMs to generate text with
+67: citations: (1) the retrieval quality is crucial to the
+68: final performance and has substantial room for im-
+69: provement; (2) LLMs’ limited context window re-
+70: stricts the number of passages they can incorporate;
+71: (3) current LLMs struggle to synthesize multiple
+72: documents in context without being distracted by
+73: irrelevant ones, although better instruction tuning
+74: brings significant improvement. These challenges
+75: pose promising research directions for developing
+76: better systems integrating retrieval and LLMs.
+77: 2 Task Setup and Datasets
+78: Our task is formalized as follows: Given a query
+79: q and a corpus of text passages D, the system
+80: is required to return an output S, which consists
+81: ofn statementss1, ..., sn, and each statement si
+82: cites a list of passagesCi ={ci,1,c i,2,...}4, where
+83: ci,j∈D. In this work, we segment LLMs’ output
+84: into statements by sentence boundaries. 5 While
+85: LLMs may include sentences that do not require a
+86: citation, such as “I’m happy to help”, we observe
+87: that almost all sentences that LLMs output provide
+88: 4In practice, we allow at most 3 citations for each state-
+89: ment as more citations usually do not help.
+90: 5QAMPARI requires a list as the answer, and we choose
+91: each entity in the generated list as a statement.
+92: 6466
+
+SOURCE A-P3 physical PDF page 3
+1: valuable information and require citations, similar
+2: to findings in Liu et al. (2023). In this work, cita-
+3: tions are enclosed by box brackets such as [1][2].
+4: We divide the corpusD into 100-word passages
+5: following previous works on open-domain question
+6: answering (Karpukhin et al., 2020; Petroni et al.,
+7: 2021; Piktus et al., 2021), in contrast to commer-
+8: cial systems like Bing Chat, which cite entire Web
+9: pages. We take 100-word passages because it is
+10: easier for humans to verify, and allows for more
+11: retrieved passages to fit in LLMs’ limited context.
+12: We choose QA datasets so that (1) they contain
+13: factual questions, in which references are impor-
+14: tant; (2) questions require long-text answers that
+15: cover multiple aspects; (3) answering the questions
+16: requires synthesizing multiple sources. We select
+17: three datasets (Table 1) and introduce them below.
+18: See §B for additional statistics.
+19: ASQA (Stelmakh et al., 2022) is a long-form fac-
+20: toid dataset. As shown in Figure 1, each question is
+21: an ambiguous question from AmbigQA (Min et al.,
+22: 2020) that requires multiple short answers to cover
+23: different aspects, and the dataset provides a long-
+24: form answer that covers all short answers. Since
+25: most questions can be answered by Wikipedia, we
+26: use the 2018-12-20 Wikipedia snapshot asD.
+27: QAMPARI (Rubin et al., 2022) is a factoid QA
+28: dataset constructed from Wikipedia, where the an-
+29: swer is a list of entities that are drawn from differ-
+30: ent passages. Same as ASQA, we use the 2018-12-
+31: 20 Wikipedia as the corpus.
+32: ELI5 (Fan et al., 2019) is a long-form QA
+33: dataset built on the Reddit forum “Explain Like I’m
+34: Five”.6 Most ELI5 questions are how/why/what
+35: questions that require long answers and multiple
+36: passages as evidence. Due to the diverse topics dis-
+37: cussed in the questions, we use Sphere (Piktus et al.,
+38: 2021)—a filtered version of Common Crawl 7—as
+39: the corpus. The ELI5 dataset is widely used in
+40: related work due to its challenging nature (Nakano
+41: et al., 2021; Menick et al., 2022; Liu et al., 2023).
+42: We randomly select 1,000 examples from the
+43: development set of each dataset for ALCE. Our
+44: benchmark primarily assesses the citation capabili-
+45: ties of existing LLMs and does not provide training
+46: data, as there are no available examples that pro-
+47: vide supervision for citations in these datasets.
+48: 6https://www.reddit.com/r/explainlikeimfive/
+49: 7https://commoncrawl.org. We also filter out any Web
+50: pages from Reddit.
+51: 3 Automatic Evaluation
+52: Our benchmark measures the following three di-
+53: mensions of system responses:
+54: • Fluency: whether the model’s generated text is
+55: fluent and coherent.
+56: • Correctness: whether the answer is accurate
+57: and covers all aspects of interest.
+58: • Citation quality: whether the answer is well
+59: supported by the cited passages and no irrelevant
+60: passages are cited.
+61: In the following, we present automatic metrics for
+62: each dimension and discuss why the combination
+63: of the three metrics provides a robust evaluation.
+64: 3.1 Fluency
+65: We use MAUVE (Pillutla et al., 2021) to evaluate
+66: the fluency of the output (§C). We deploy MAUVE
+67: for ASQA and ELI5 and omit it for QAMPARI, as
+68: QAMPARI only requires a list of short answers as
+69: the response and LLMs consistently adhere to the
+70: format in our experiments. As MAUVE is sensitive
+71: to output length and text style, and most LLMs are
+72: capable of producing fluent text, we mainly employ
+73: it as a sanity check as long as the MAUVE scores
+74: are high enough.
+75: 3.2 Correctness
+76: Our objective is to measure the informativeness and
+77: utility of the generation to the question. Liu et al.
+78: (2023) propose to directly evaluateperceived utility
+79: by humans, a process difficult to automate. There-
+80: fore, we use correctness—whether the response is
+81: accurate compared to a ground truth answer—as a
+82: proxy. Evaluating the correctness of long-form gen-
+83: eration is a challenging task (Krishna et al., 2021),
+84: and we describe our strategy for each dataset be-
+85: low. Figure 2 illustrates the metrics and we include
+86: additional implementation details in §C.
+87: For ASQA, we follow Stelmakh et al. (2022)
+88: and calculate the recall of correct short answers by
+89: checking whether the short answers (provided by
+90: the dataset) are exact substrings of the generation
+91: (exact match recall; EM recall).
+92: For QAMPARI, we follow Rubin et al. (2022)
+93: and calculate the precision and recall of the model
+94: prediction, by checking the exact match to the gold
+95: answer list. We add one additional adjustment:
+96: considering that users often want to know only a
+97: few example answers of the question, our evalua-
+98: tion considers recall to be 100% if the prediction
+99: includes at least 5 correct answers (recall-5).
+100: 6467

@@ -1,0 +1,124 @@
+{
+  "ok": true,
+  "data": {
+    "choices": [
+      {
+        "finish_reason": "stop",
+        "index": 0,
+        "message": {
+          "annotations": [],
+          "content": "{\n  \"decisions\": [\n    {\n      \"id\": \"D1\",\n      \"answer\": \"先明确指标的“对象”和“分母”：文中把正确性（correctness）按数据集分别量化——ASQA 使用短答案集合作分母，计算“exact match recall（EM recall）”，即看数据集中提供的短答案是否为模型生成文本的精确子串；QAMPARI 对预测列表计算 precision 和 recall，分母分别为模型预测的实体列表（precision）和金标答案列表（recall）。在 QAMPARI 上作者又对 recall 做阈值调整：若预测包含至少 5 个正确答案，则记为 100%（recall-5）。应先核查你关心的指标是 EM recall（覆盖所有短答）还是经阈值放宽的 recall-5（只需给出 ≥5 个正确项）；二者分母与判定标准不同，不能混用或等同。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"A-P3\",\n          \"start_line\": 75,\n          \"end_line\": 83\n        },\n        {\n          \"source_id\": \"A-P3\",\n          \"start_line\": 87,\n          \"end_line\": 99\n        }\n      ],\n      \"limitations\": \"依据仅限所给原文行；原文给出的是方法描述与规则（如“exact match recall”与“recall-5”），但未对边界情况（例如金标答案数少于 5、重复实体处理、预测列表长度上限如何影响 precision）做详尽说明。\"\n    },\n    {\n      \"id\": \"D2\",\n      \"answer\": \"QAMPARI 的 precision 与 recall 按照与金标答案列表的精确匹配来计算（即逐项 exact match）；作者在 recall 上做了额外调整：如果模型预测中包含至少 5 个正确答案，则将 recall 视为 100%（记为 recall-5），理由是用户通常只需若干示例而非穷尽所有项。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"A-P3\",\n          \"start_line\": 92,\n          \"end_line\": 99\n        }\n      ],\n      \"limitations\": \"原文说明了 recall-5 的存在与判定阈值（5 个），但未提供关于该阈值选择的统计动机、对不同问题的适用性、或当金标少于 5 项时的处理细节；precision 的具体计算过程（例如重复预测或部分重合如何计分）也未细化。\"\n    },\n    {\n      \"id\": \"D3\",\n      \"answer\": \"教学性示例（明确标注为示范）：金标准含 10 个实体，模型预测给出 5 个实体且全部正确。按照文中度量：普通 recall = 正确预测数/金标数 = 5/10 = 50%；recall-5 按规则若预测包含至少 5 个正确答案则记为 100%（因此 recall-5 = 100%）；precision = 正确预测数/预测数 = 5/5 = 100%。该例清楚展示 recall 与 recall-5 的差异。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"A-P3\",\n          \"start_line\": 92,\n          \"end_line\": 99\n        }\n      ],\n      \"limitations\": \"该例为作者规则下的构造性教学示例，原文本身未给此具体数值示例；示例假定金标至少為 10 且预测中无错误项，原文未说明当金标少于 5 或存在重复/别名匹配时如何处理。\"\n    },\n    {\n      \"id\": \"D4\",\n      \"answer\": \"100% 的 recall-5 无法宣称已覆盖“全部答案”，因 recall-5 的定义是：若预测中至少含 5 个正确项即记为 100%，这只表明模型提供了足够的示例而非穷尽金标列表；而 EM recall（ASQA 的 exact match recall）则要求金标短答在生成文本中被逐一匹配，度量目标不同。因此不能把 recall-5 的 100% 与要求严格覆盖所有金标项的 EM recall 或其它严格的 EM 指标混用或等同解读。\",\n      \"evidence\": [\n        {\n          \"source_id\": \"A-P3\",\n          \"start_line\": 87,\n          \"end_line\": 91\n        },\n        {\n          \"source_id\": \"A-P3\",\n          \"start_line\": 92,\n          \"end_line\": 99\n        }\n      ],\n      \"limitations\": \"基于原文中对两种度量的描述推论；原文未给出如何在报告中并列或比较这类不同阈值的度量的建议，也未讨论在跨数据集或用户场景下采用 recall-5 的局限性（例如金标规模差异或用户期待不同）。\"\n    }\n  ]\n}",
+          "provider_specific_fields": {
+            "refusal": null
+          },
+          "role": "assistant"
+        },
+        "provider_specific_fields": {
+          "content_filter_results": {
+            "hate": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "protected_material_code": {
+              "detected": false,
+              "filtered": false
+            },
+            "protected_material_text": {
+              "detected": false,
+              "filtered": false
+            },
+            "self_harm": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "sexual": {
+              "filtered": false,
+              "severity": "safe"
+            },
+            "violence": {
+              "filtered": false,
+              "severity": "safe"
+            }
+          }
+        }
+      }
+    ],
+    "created": 1792989198,
+    "id": "chatcmpl-Ed6gYyWZas9JhdxJBazkSziSKT3GW",
+    "model": "chenkun/gpt-5-mini",
+    "object": "chat.completion",
+    "prompt_filter_results": [
+      {
+        "content_filter_results": {
+          "hate": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "jailbreak": {
+            "detected": false,
+            "filtered": false
+          },
+          "self_harm": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "sexual": {
+            "filtered": false,
+            "severity": "safe"
+          },
+          "violence": {
+            "filtered": false,
+            "severity": "safe"
+          }
+        },
+        "prompt_index": 0
+      }
+    ],
+    "routing": {
+      "serving_pipereplica": "d20261026034401-31c836bd-default-r1-dp0-default"
+    },
+    "service_tier": "default",
+    "usage": {
+      "completion_tokens": 2477,
+      "completion_tokens_details": {
+        "accepted_prediction_tokens": 0,
+        "audio_tokens": 0,
+        "reasoning_tokens": 1344,
+        "rejected_prediction_tokens": 0
+      },
+      "latency_checkpoint": {
+        "engine_tbt_ms": 7,
+        "engine_ttft_ms": 63,
+        "engine_ttlt_ms": 16323,
+        "pre_inference_ms": 101,
+        "service_tbt_ms": 7,
+        "service_ttft_ms": 219,
+        "service_ttlt_ms": 16468,
+        "user_visible_ttft_ms": 118
+      },
+      "prompt_tokens": 2891,
+      "prompt_tokens_details": {
+        "audio_tokens": 0,
+        "cached_tokens": 0
+      },
+      "total_tokens": 5368
+    }
+  },
+  "notice": {
+    "billing": {
+      "balance": {
+        "redacted": "private account balance"
+      },
+      "sufficient": false
+    }
+  },
+  "meta": {
+    "request_id": "17dd19d1-2f42-497a-b2d6-57490fbd1177",
+    "cli_version": "2.8.1",
+    "cli_commit": "a735f03d78b958fa7836e9a9caf4c65a044e1e88",
+    "cli_modified": false,
+    "command": "bohr chat",
+    "duration_ms": 18241,
+    "timestamp": 1792989215
+  }
+}
